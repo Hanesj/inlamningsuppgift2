@@ -1,38 +1,34 @@
-import { convEth, createClient } from "./helpers/explorer.js";
-const transactionDetailsDisplay = document.querySelector("#transactionDetails");
+import { convEth, createClient } from './helpers/explorer.js';
+const transactionDetailsDisplay = document.querySelector('#transactionDetails');
 
 let client = undefined;
 
 const initApp = () => {
-  const hash = location.search.split("=")[1];
-  client = createClient();
+	const hash = location.search.split('=')[1];
+	client = createClient();
 
-  displayTransactionDetails(hash);
+	displayTransactionDetails(hash);
 };
 
 const displayTransactionDetails = async (hash) => {
-  const block = await client.getBlock({ blockHash: hash });
+	const block = await client.getBlock({ blockHash: hash });
 
-  if (block.transactions.length === 0) {
-    generateDisplay(block);
-    return;
-  }
-  for (let transaction of block.transactions) {
-    const trx = await client.getTransaction({ hash: transaction });
-    generateDisplay(block, trx);
-  }
+	if (block.transactions.length === 0) {
+		generateDisplay(block);
+		return;
+	}
+	genBlockInfo(block);
+	for (let transaction of block.transactions) {
+		const trx = await client.getTransaction({ hash: transaction });
+		genTransactionDisplay(trx);
+	}
 };
 
-const generateDisplay = (block, transaction) => {
-  let html = "";
-  transactionDetailsDisplay.innerHTML = html;
-  if (!transaction) {
-    document.querySelector(".page-title").innerText = "NO TRANSACTIONS";
-    return;
-  }
+const genBlockInfo = (block) => {
+	let html = '';
 
-  html = `
-    <h2 id="blockNumber">BLOCK NUMBER ${block.number}</h2>
+	transactionDetailsDisplay.innerHTML = html;
+	html = `<h2 id="blockNumber">BLOCK NUMBER ${block.number}</h2>
     <article class="trx-details">
       <section>
         <span>Gas used: </span>
@@ -45,14 +41,24 @@ const generateDisplay = (block, transaction) => {
 <section>
         <span>Mined date:</span>
         <small>${new Date(parseInt(block.timestamp * 1000n)).toLocaleString(
-          "sv-SE"
-        )}</small>
+			'sv-SE'
+		)}</small>
       </section>
 <section>
         <span>Block Hash: </span>
         <small>${block.hash}</small>
       </section>
-    </article>
+  </article>`;
+	transactionDetailsDisplay.innerHTML = html;
+};
+
+const genTransactionDisplay = (transaction) => {
+	let html = '';
+	if (!transaction) {
+		document.querySelector('.page-title').innerText = 'NO TRANSACTIONS';
+		return;
+	}
+	html = `
 
     <h2 id="trxHash">TRX Hash ${transaction.hash}</h2>
     <article class="trx-details">
@@ -80,7 +86,7 @@ const generateDisplay = (block, transaction) => {
     </article>
   `;
 
-  transactionDetailsDisplay.innerHTML = html;
+	transactionDetailsDisplay.innerHTML += html;
 };
 
-document.addEventListener("DOMContentLoaded", initApp);
+document.addEventListener('DOMContentLoaded', initApp);
