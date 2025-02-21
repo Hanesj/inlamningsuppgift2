@@ -14,7 +14,6 @@ const getBalance = async (e) => {
 	const balance = await client.getBalance({
 		address: balanceInput.value,
 	});
-	console.log(convEth(balance));
 	displayBalance(balanceInput.value, convEth(balance));
 };
 
