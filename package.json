@@ -1,0 +1,15 @@
+{
+  "name": "inlamningsuppgift2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "ether": "node app-ethers.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "ethers": "^6.13.5",
+    "ganache": "^7.9.2"
+  }
+}
