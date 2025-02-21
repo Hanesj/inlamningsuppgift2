@@ -1,6 +1,6 @@
 import { createElement, createTextElement } from './dom.js';
 
-import { convEth, createClient, createWallet } from './helpers/explorer.js';
+import { createClient } from './helpers/explorer.js';
 
 const blockList = document.querySelector('#list');
 const subTitle = document.querySelector('h4');
